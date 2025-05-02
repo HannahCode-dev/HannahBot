@@ -5,6 +5,7 @@ import json
 
 intents = discord.Intents.default()
 intents.message_content = True  # Enable if you want to read message content
+intents.reactions = True  # Enable reaction events
 
 # Load config from JSON file
 with open('config/config.json') as f:
