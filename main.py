@@ -4,10 +4,10 @@ import os
 import json
 
 intents = discord.Intents.default()
-intents.message_content = True  # Enable if you want to read message content
-intents.reactions = True  # Enable reaction events
+intents.message_content = True
+intents.reactions = True
+intents.members = True
 
-# Load config from JSON file
 with open('config/config.json') as f:
     config = json.load(f)
 
@@ -24,7 +24,6 @@ async def on_ready():
 import asyncio
 
 async def main():
-    # Load all modules from the modules directory
     for filename in os.listdir('./modules'):
         if filename.endswith('.py') and filename != '__init__.py':
             try:

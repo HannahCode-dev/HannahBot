@@ -4,6 +4,9 @@
 This is a modular Discord bot built using the discord.py library. The bot loads modules dynamically from the modules directory.
 
 ## Setup
+0. Install:
+   git clone https://github.com/HannahCode-dev/HannahBot.git
+   cd HannahBot
 
 1. Install dependencies:
    pip install -r requirements.txt

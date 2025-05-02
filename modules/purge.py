@@ -4,7 +4,6 @@ import json
 class Purge(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        # Load purge role from config
         with open('config/config.json') as f:
             config = json.load(f)
         self.purge_role = config.get('PURGE_ROLE')
