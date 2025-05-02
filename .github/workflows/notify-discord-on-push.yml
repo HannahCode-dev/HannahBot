@@ -1,0 +1,63 @@
+name: Notify Discord on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send commit notification to Discord
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          COMMIT_AUTHOR: ${{ github.actor }}
+          REPO_NAME: ${{ github.repository }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+        run: |
+          # Prepare the content payload with an embed
+          PAYLOAD=$(jq -n \
+            --arg title "New Commit Pushed" \
+            --arg author "$COMMIT_AUTHOR" \
+            --arg repo "$REPO_NAME" \
+            --arg message "$COMMIT_MESSAGE" \
+            --arg url "$COMMIT_URL" \
+            '{
+              embeds: [
+                {
+                  title: $title,
+                  color: 3066993,  # A nice teal color
+                  fields: [
+                    {
+                      name: "Author",
+                      value: $author,
+                      inline: true
+                    },
+                    {
+                      name: "Repository",
+                      value: $repo,
+                      inline: true
+                    },
+                    {
+                      name: "Message",
+                      value: $message,
+                      inline: false
+                    }
+                  ],
+                  footer: {
+                    text: "View Commit",
+                    icon_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                  },
+                  url: $url
+                }
+              ]
+            }')
+
+          # Send the POST request to Discord webhook
+          if ! curl -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_URL"; then
+            echo "Failed to send notification to Discord"
+            exit 1
+          fi
