@@ -1,0 +1,6 @@
+{
+  "BOT_TOKEN": "BOT_TOKEN",
+  "PREFIX": "$",
+  "PURGE_ROLE": "PERM",
+  "MEMBER_ROLE": "Member"
+}
